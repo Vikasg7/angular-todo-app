@@ -17,10 +17,10 @@ npm start
 
 ## Develop
 ````
-   git clone https://github.com/Vikasg7/angular-todo-app.git
-   cd angular-todo-app
-   npm install
-   npm run watch
+git clone https://github.com/Vikasg7/angular-todo-app.git
+cd angular-todo-app
+npm install
+npm run watch
 ````  
 
 ## Lisense  
