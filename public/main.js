@@ -119,6 +119,10 @@ let TodoText = class TodoText {
         this.isEditing = false;
         await this.todoSrv.update(newTodo).catch(console.log);
     }
+    // It will hide div.editing on todoList update
+    ngOnChanges() {
+        this.isEditing = false;
+    }
     cancel(ele) {
         ele.textContent = this.todo.todo;
         this.isEditing = false;

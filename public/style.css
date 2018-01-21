@@ -56,7 +56,8 @@ todo-app {
         todo-app todo-body div.todos todo-text div.editing {
           position: absolute;
           height: 20px;
-          bottom: -22.5px; }
+          bottom: -22.5px;
+          z-index: 1; }
       todo-app todo-body div.todos div.del {
         grid-area: del;
         padding: 5px 5px; }
