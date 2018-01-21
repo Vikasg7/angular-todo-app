@@ -1,0 +1,25 @@
+{
+   "include": [
+      "./app/**/*.ts"
+   ],
+   "compilerOptions": {
+      "target": "es2017",
+      "declaration": false,
+      "module": "commonjs",
+      "sourceMap": false,
+      "moduleResolution": "node",
+      "emitDecoratorMetadata": true,
+      "experimentalDecorators": true,
+      "noImplicitAny": true,
+      "suppressImplicitAnyIndexErrors": true,
+      "lib": [
+         "es2017",
+         "dom"
+      ],
+      "typeRoots": [
+         "node_modules/@types/"
+      ]
+   },
+   "compileOnSave": true,
+   "buildOnSave": true
+}

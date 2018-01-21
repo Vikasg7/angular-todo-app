@@ -1,0 +1,49 @@
+{
+  "name": "angular-todo-app",
+  "version": "0.0.1",
+  "description": "A todo app written in angular 2+",
+  "main": "index.js",
+  "dependencies": {
+    "@angular/animations": "^5.1.1",
+    "@angular/common": "^5.1.1",
+    "@angular/compiler": "^5.1.1",
+    "@angular/core": "^5.1.1",
+    "@angular/forms": "^5.1.1",
+    "@angular/http": "^5.1.1",
+    "@angular/platform-browser": "^5.1.1",
+    "@angular/platform-browser-dynamic": "^5.1.1",
+    "@angular/router": "^5.1.1",
+    "core-js": "^2.5.3",
+    "immutable": "^3.8.2",
+    "rxjs": "^5.5.5",
+    "zone.js": "^0.8.14"
+  },
+  "devDependencies": {
+    "@types/node": "latest",
+    "@types/websql": "latest",
+    "browserify": "latest",
+    "concurrently": "^3.5.1",
+    "factor-bundle": "latest",
+    "lite-server": "latest",
+    "node-sass": "^4.7.2",
+    "npm-run-all": "latest",
+    "tsify": "latest",
+    "typescript": "^2.6.2",
+    "watch": "^1.0.2",
+    "watchify": "^3.9.0"
+  },
+  "scripts": {
+    "build": "watchify app/main.ts app/vendor.ts -p tsify -p [ factor-bundle -o public/main.js -o public/vendor.js ] -o public/common.js",
+    "css": "watch \"node-sass app/styles/style.sass public/style.css\" app/styles/",
+    "serve": "lite-server",
+    "watch": "concurrently \"npm run css\" \"npm run build\" \"npm run serve\"",
+    "start": "npm run serve"
+  },
+  "keywords": [
+    "angular2",
+    "TypeScript",
+    "browserify"
+  ],
+  "author": "Alexandru Vladutu",
+  "license": "MIT"
+}
