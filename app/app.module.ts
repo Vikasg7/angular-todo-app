@@ -11,6 +11,7 @@ import { TodoSrv } from './services/todo';
 import { StorageSrv } from './services/storage';
 import { ContentEditableOnHover } from './directives/contentEditableOnHover';
 import { TodoText } from './components/todoText';
+import { SafeHtmlPipe } from './pipes/safeHtml';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { TodoText } from './components/todoText';
     HeaderComponent,
     BodyComponent,
     ContentEditableOnHover,
-    TodoText
+    TodoText,
+    SafeHtmlPipe
    ],
    imports: [
       BrowserModule,

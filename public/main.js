@@ -5,7 +5,7 @@ const platform_browser_dynamic_1 = require("@angular/platform-browser-dynamic");
 const app_module_1 = require("./app.module");
 platform_browser_dynamic_1.platformBrowserDynamic().bootstrapModule(app_module_1.AppModule);
 
-},{"./app.module":1,"@angular/platform-browser-dynamic":16}],1:[function(require,module,exports){
+},{"./app.module":1,"@angular/platform-browser-dynamic":17}],1:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -25,6 +25,7 @@ const todo_1 = require("./services/todo");
 const storage_1 = require("./services/storage");
 const contentEditableOnHover_1 = require("./directives/contentEditableOnHover");
 const todoText_1 = require("./components/todoText");
+const safeHtml_1 = require("./pipes/safeHtml");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -34,7 +35,8 @@ AppModule = __decorate([
             header_1.HeaderComponent,
             body_1.BodyComponent,
             contentEditableOnHover_1.ContentEditableOnHover,
-            todoText_1.TodoText
+            todoText_1.TodoText,
+            safeHtml_1.SafeHtmlPipe
         ],
         imports: [
             platform_browser_1.BrowserModule,
@@ -48,7 +50,37 @@ AppModule = __decorate([
 ], AppModule);
 exports.AppModule = AppModule;
 
-},{"./components/app":2,"./components/body":3,"./components/header":4,"./components/todoText":5,"./directives/contentEditableOnHover":6,"./services/storage":8,"./services/todo":9,"@angular/core":13,"@angular/forms":14,"@angular/http":15,"@angular/platform-browser":17}],6:[function(require,module,exports){
+},{"./components/app":2,"./components/body":3,"./components/header":4,"./components/todoText":5,"./directives/contentEditableOnHover":6,"./pipes/safeHtml":8,"./services/storage":9,"./services/todo":10,"@angular/core":14,"@angular/forms":15,"@angular/http":16,"@angular/platform-browser":18}],8:[function(require,module,exports){
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const core_1 = require("@angular/core");
+const platform_browser_1 = require("@angular/platform-browser");
+let SafeHtmlPipe = class SafeHtmlPipe {
+    constructor(_sanitizer) {
+        this._sanitizer = _sanitizer;
+    }
+    transform(value) {
+        return this._sanitizer.bypassSecurityTrustHtml(value);
+    }
+};
+SafeHtmlPipe = __decorate([
+    core_1.Pipe({
+        name: 'safeHtml'
+    }),
+    __metadata("design:paramtypes", [platform_browser_1.DomSanitizer])
+], SafeHtmlPipe);
+exports.SafeHtmlPipe = SafeHtmlPipe;
+
+},{"@angular/core":14,"@angular/platform-browser":18}],6:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -95,7 +127,7 @@ ContentEditableOnHover = __decorate([
 ], ContentEditableOnHover);
 exports.ContentEditableOnHover = ContentEditableOnHover;
 
-},{"@angular/core":13}],5:[function(require,module,exports){
+},{"@angular/core":14}],5:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -124,7 +156,7 @@ let TodoText = class TodoText {
         this.isEditing = false;
     }
     cancel(ele) {
-        ele.textContent = this.todo.todo;
+        ele.innerHTML = this.todo.todo;
         this.isEditing = false;
     }
 };
@@ -136,9 +168,9 @@ TodoText = __decorate([
     core_1.Component({
         selector: "todo-text",
         template: `
-      <div class="todoText" #todoText [class.done]="todo.isDone" content-editable-on-hover (click)="isEditing=true">{{todo.todo}}</div>
+      <div class="todoText" #todoText [class.done]="todo.isDone" content-editable-on-hover (click)="isEditing=true" [innerHTML]="todo.todo | safeHtml"></div>
       <div class="editing" *ngIf="isEditing">
-         <button (click)="updateTodo(todoText.textContent)">&nbsp;&#10004;&nbsp;</button>
+         <button (click)="updateTodo(todoText.innerHTML)">&nbsp;&#10004;&nbsp;</button>
          &nbsp;
          <button (click)="cancel(todoText)">&nbsp;&#10008;&nbsp;</button>
       </div>
@@ -148,7 +180,7 @@ TodoText = __decorate([
 ], TodoText);
 exports.TodoText = TodoText;
 
-},{"../services/todo":9,"@angular/core":13}],4:[function(require,module,exports){
+},{"../services/todo":10,"@angular/core":14}],4:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -187,7 +219,7 @@ HeaderComponent = __decorate([
 ], HeaderComponent);
 exports.HeaderComponent = HeaderComponent;
 
-},{"../services/todo":9,"@angular/core":13}],3:[function(require,module,exports){
+},{"../services/todo":10,"@angular/core":14}],3:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -236,7 +268,7 @@ BodyComponent = __decorate([
 ], BodyComponent);
 exports.BodyComponent = BodyComponent;
 
-},{"../services/todo":9,"@angular/core":13}],9:[function(require,module,exports){
+},{"../services/todo":10,"@angular/core":14}],10:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -289,7 +321,7 @@ TodoSrv = __decorate([
 ], TodoSrv);
 exports.TodoSrv = TodoSrv;
 
-},{"./storage":8,"@angular/core":13,"immutable":359,"rxjs/BehaviorSubject":360}],8:[function(require,module,exports){
+},{"./storage":9,"@angular/core":14,"immutable":360,"rxjs/BehaviorSubject":361}],9:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -349,7 +381,7 @@ StorageSrv = __decorate([
 ], StorageSrv);
 exports.StorageSrv = StorageSrv;
 
-},{"@angular/core":13,"immutable":359}],359:[function(require,module,exports){
+},{"@angular/core":14,"immutable":360}],360:[function(require,module,exports){
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
  *
@@ -5350,4 +5382,4 @@ AppComponent = __decorate([
 ], AppComponent);
 exports.AppComponent = AppComponent;
 
-},{"@angular/core":13}]},{},[7]);
+},{"@angular/core":14}]},{},[7]);

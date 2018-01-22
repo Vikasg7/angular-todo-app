@@ -5,9 +5,9 @@ import { TodoSrv } from "../services/todo";
 @Component({
    selector: "todo-text",
    template: `
-      <div class="todoText" #todoText [class.done]="todo.isDone" content-editable-on-hover (click)="isEditing=true">{{todo.todo}}</div>
+      <div class="todoText" #todoText [class.done]="todo.isDone" content-editable-on-hover (click)="isEditing=true" [innerHTML]="todo.todo | safeHtml"></div>
       <div class="editing" *ngIf="isEditing">
-         <button (click)="updateTodo(todoText.textContent)">&nbsp;&#10004;&nbsp;</button>
+         <button (click)="updateTodo(todoText.innerHTML)">&nbsp;&#10004;&nbsp;</button>
          &nbsp;
          <button (click)="cancel(todoText)">&nbsp;&#10008;&nbsp;</button>
       </div>
@@ -33,7 +33,7 @@ export class TodoText {
    }
 
    public cancel(ele: HTMLDivElement) {
-      ele.textContent = this.todo.todo
+      ele.innerHTML = this.todo.todo
       this.isEditing = false
    }
 
